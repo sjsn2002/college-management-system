@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Faculty Member - College Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit Faculty Member</h1>
+
+        <form action="/faculty/<%= faculty._id %>/edit" method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="<%= faculty.name %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= faculty.email %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="department" class="form-label">Department</label>
+                <input type="text" class="form-control" id="department" name="department" value="<%= faculty.department %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="designation" class="form-label">Designation</label>
+                <input type="text" class="form-control" id="designation" name="designation" value="<%= faculty.designation %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="courses" class="form-label">Courses (comma-separated)</label>
+                <input type="text" class="form-control" id="courses" name="courses" value="<%= faculty.courses.join(', ') %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="qualifications" class="form-label">Qualifications (comma-separated)</label>
+                <input type="text" class="form-control" id="qualifications" name="qualifications" value="<%= faculty.qualifications.join(', ') %>">
+            </div>
+            <div class="mb-3">
+                <label for="contactNumber" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="contactNumber" name="contactNumber" value="<%= faculty.contactNumber %>">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Faculty Member</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

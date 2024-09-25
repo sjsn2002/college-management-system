@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details - College Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Student Details</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><%= student.name %></h5>
+                <p class="card-text"><strong>Roll No:</strong> <%= student.rollno %></p>
+                <p class="card-text"><strong>Email:</strong> <%= student.email %></p>
+                <p class="card-text"><strong>Class:</strong> <%= student.class %></p>
+                <p class="card-text"><strong>Year:</strong> <%= student.year %></p>
+                <p class="card-text"><strong>Date of Birth:</strong> <%= student.dateOfBirth ? student.dateOfBirth.toDateString() : 'Not provided' %></p>
+                <p class="card-text"><strong>Gender:</strong> <%= student.gender || 'Not provided' %></p>
+                <p class="card-text"><strong>Contact Number:</strong> <%= student.contactNumber || 'Not provided' %></p>
+
+                <h6 class="mt-4">Address</h6>
+                <% if (student.address) { %>
+                    <p class="card-text"><%= student.address.street %>, <%= student.address.city %>, <%= student.address.state %> <%= student.address.zipCode %>, <%= student.address.country %></p>
+                <% } else { %>
+                    <p class="card-text">Address not provided</p>
+                <% } %>
+
+                <h6 class="mt-4">Courses and Grades</h6>
+                <% if (student.courses && student.courses.length > 0) { %>
+                    <ul class="list-group">
+                        <% student.courses.forEach(course => { %>
+                            <li class="list-group-item">
+                                <%= course.course.name %> - Grade: <%= course.grade %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p>No courses or grades available</p>
+                <% } %>
+            </div>
+        </div>
+
+        <a href="/students/<%= student._id %>/edit" class="btn btn-primary mt-3">Edit Student</a>
+        <a href="/students" class="btn btn-secondary mt-3">Back to Students List</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

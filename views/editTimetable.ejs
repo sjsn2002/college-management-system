@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Timetable - College Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">College Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1 class="mb-4">Edit Timetable for <%= timetable.class %></h1>
+
+        <form action="/timetable/edit/<%= timetable.class %>" method="POST">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% const times = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM']; %>
+                    <% times.forEach((time, index) => { %>
+                        <tr>
+                            <td><%= time %></td>
+                            <% ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].forEach(day => { %>
+                                <td>
+                                    <% const slot = timetable.slots.find(s => s.day === day && s.time === time); %>
+                                    <input type="text" class="form-control" name="slots[<%= index * 5 + ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].indexOf(day) %>][subject]" value="<%= slot ? slot.subject : '' %>">
+                                    <input type="hidden" name="slots[<%= index * 5 + ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].indexOf(day) %>][day]" value="<%= day %>">
+                                    <input type="hidden" name="slots[<%= index * 5 + ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].indexOf(day) %>][time]" value="<%= time %>">
+                                </td>
+                            <% }) %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Save Timetable</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

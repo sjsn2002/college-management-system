@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management - College Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">College Management System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Attendance Management</h1>
+
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0">Mark Attendance</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/attendance/mark" method="POST">
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Date:</label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="course" class="form-label">Course:</label>
+                                <select class="form-select" id="course" name="courseId" required>
+                                    <option value="">Select a course</option>
+                                    <% courses.forEach(course => { %>
+                                        <option value="<%= course._id %>"><%= course.name %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Mark Attendance</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0">Attendance Summary</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">Attendance Records</h2>
+                <div>
+                    <button class="btn btn-outline-primary" id="filterBtn">
+                        <i class="bi bi-funnel"></i> Filter
+                    </button>
+                    <button class="btn btn-outline-success" id="exportBtn">
+                        <i class="bi bi-download"></i> Export
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Course</th>
+                                <th>Student</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% attendanceRecords.forEach(record => { %>
+                                <tr>
+                                    <td><%= record.date.toISOString().split('T')[0] %></td>
+                                    <td><%= record.course.name %></td>
+                                    <td><%= record.student.name %></td>
+                                    <td>
+                                        <span class="badge bg-<%= record.status === 'Present' ? 'success' : 'danger' %>">
+                                            <%= record.status %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination can be added here if needed -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Attendance chart
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    data: [<%= summary.present %>, <%= summary.absent %>],
+                    backgroundColor: ['#28a745', '#dc3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Overall Attendance'
+                    }
+                }
+            }
+        });
+
+        // Filter and Export button functionality
+        document.getElementById('filterBtn').addEventListener('click', function() {
+            alert('Filter functionality to be implemented');
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            alert('Export functionality to be implemented');
+        });
+    </script>
+</body>
+</html>
